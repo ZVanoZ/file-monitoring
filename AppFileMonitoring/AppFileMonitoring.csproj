@@ -76,7 +76,10 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StateAdapter.cs" />
+    <Compile Include="StateAdapter\StateAdapter.cs">
+      <SubType>code</SubType>
+    </Compile>
+    <Compile Include="StateAdapter\DirsAdapter.cs" />
     <Compile Include="StateSchema\Schema.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

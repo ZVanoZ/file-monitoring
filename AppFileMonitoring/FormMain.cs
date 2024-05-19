@@ -59,5 +59,12 @@ namespace AppFileMonitoring
             FormInpDirSet form = new FormInpDirSet();
             form.Show(this);
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            int cnt1 = StateAdapter.state.Dirs.Count;
+            var ds = dirsBindingSource.DataSource;
+            int cnt2 = dirsBindingSource.Count;
+        }
     }
 }

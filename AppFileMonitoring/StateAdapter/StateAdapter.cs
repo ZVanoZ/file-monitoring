@@ -1,21 +1,17 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using AppFileMonitoring.StateSchema;
-using static AppFileMonitoring.StateSchema.State;
 
 namespace AppFileMonitoring
 {
-    public static class StaticStateAdapter { 
-        public static StateAdapter state = new StateAdapter();
-    }
-
     public partial class StateAdapter : 
         State 
 //        , System.ComponentModel.ISupportInitialize
     {
         public static StateAdapter state;
+        public static List<StateAdapter> instances = new List<StateAdapter>();
+
 
         /** 
          * Классический Singleton не проходит т.к. конструктор форм использует публичный конструктор.
@@ -25,13 +21,19 @@ namespace AppFileMonitoring
          */
         public StateAdapter()
         {
-            string a = "aaa";
+            instances.Add(this);    
         }
 
         static StateAdapter() {
-            state = new StateAdapter();
+            //state = new StateAdapter();
+            if (instances.Count < 1) {
+                state = new StateAdapter();
+            } else
+            {
+                state = instances[0];
+            }
         }
-        
+
 
         //protected State State = new State();
 
@@ -41,6 +43,7 @@ namespace AppFileMonitoring
                 return state;
             }
         }
+
         public static StateAdapter GetInstance()
         {
             return state;
@@ -75,35 +78,6 @@ namespace AppFileMonitoring
             string xmlPath = getXmlPath();
             state.WriteXml(xmlPath);
         }
-
-
-        public static class DirsAdapter {
-            public static void set(
-                string dirInp,
-                string dirOut = null,
-                Nullable<bool> isActive = null
-            )
-            {
-                bool isInsert = false;
-                DirsRow row = state.Dirs.FindByDirInp( dirInp );
-                if ( row == null )
-                {
-                    isInsert = true;
-                    row = state.Dirs.NewDirsRow();
-                    row.DirInp = dirInp;   
-                }
-                if(dirOut != null) { 
-                    row.DirOut = dirOut;
-                }
-                if ( isActive != null )
-                {
-                    row.IsActive = isActive.Value;
-                }
-                if (isInsert) {
-                    state.Dirs.Rows.Add( row );
-                }
-            }
-        }
-
     }
+
 }
